@@ -112,7 +112,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.0";
+        public const string VERSION = "1.0.1";
 
         #endregion
 
@@ -197,7 +197,7 @@ namespace cAlgo
         /// <summary>
         /// I livelli standard di Fibonacci
         /// </summary>
-        readonly decimal[] DefaultFiboLevels = new[]
+        readonly decimal[] DefaultFiboLevels = new[] 
         {
             0.0m,
             23.6m,
@@ -230,15 +230,18 @@ namespace cAlgo
             _checkProductUpdate();
 
             // --> L'utente potrebbe inserire un colore malforme
-            if (Color.FromName(PBackgroundColorString).ToArgb() == 0) PBackgroundColorString = MyColor.PanelBG;
+            if (Color.FromName(PBackgroundColorString).ToArgb() == 0)
+                PBackgroundColorString = MyColor.PanelBG;
 
             PBackgroundColor = Color.FromName(PBackgroundColorString);
 
-            if (Color.FromName(DrawingsColorString).ToArgb() == 0) DrawingsColorString = MyColor.ChartObj;
+            if (Color.FromName(DrawingsColorString).ToArgb() == 0)
+                DrawingsColorString = MyColor.ChartObj;
 
             DrawingsColor = Color.FromName(DrawingsColorString);
 
-            if (Color.FromName(SelectionleColorString).ToArgb() == 0) SelectionleColorString = MyColor.ChartSelection;
+            if (Color.FromName(SelectionleColorString).ToArgb() == 0)
+                SelectionleColorString = MyColor.ChartSelection;
 
             SelectionleColor = Color.FromArgb(Opacity, Color.FromName(SelectionleColorString));
 
@@ -278,10 +281,10 @@ namespace cAlgo
                 return;
 
             // --> Organizzo i dati per la richiesta degli aggiornamenti
-            Guru.API.RequestProductInfo Request = new Guru.API.RequestProductInfo
+            Guru.API.RequestProductInfo Request = new Guru.API.RequestProductInfo 
             {
 
-                MyProduct = new Guru.Product
+                MyProduct = new Guru.Product 
                 {
 
                     ID = ID,
@@ -326,7 +329,7 @@ namespace cAlgo
 
             string separator = "---------------------";
 
-            var stackPanel = new StackPanel
+            var stackPanel = new StackPanel 
             {
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -336,78 +339,78 @@ namespace cAlgo
                 BackgroundColor = PBackgroundColor
             };
 
-            var equiChannelButton = new Button
+            var equiChannelButton = new Button 
             {
                 Text = "Equidistant Channel",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var linearRegressionButton = new Button
+            var linearRegressionButton = new Button 
             {
                 Text = "Linear Regression",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var fibonacciRetracementButton = new Button
+            var fibonacciRetracementButton = new Button 
             {
                 Text = "Fibonacci Retracement",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var supportTrendLineButton = new Button
+            var supportTrendLineButton = new Button 
             {
                 Text = "Support Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceTrendLineButton = new Button
+            var resistanceTrendLineButton = new Button 
             {
                 Text = "Resistance Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceSupportTrendLineButton = new Button
+            var resistanceSupportTrendLineButton = new Button 
             {
                 Text = "Rex / Sup Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var supportLevelButton = new Button
+            var supportLevelButton = new Button 
             {
                 Text = "Support",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceLevelButton = new Button
+            var resistanceLevelButton = new Button 
             {
                 Text = "Resistance",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var removeAllObjButton = new Button
+            var removeAllObjButton = new Button 
             {
                 Text = "Remove all (Shift + Click)",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceSupportLevelButton = new Button
+            var resistanceSupportLevelButton = new Button 
             {
                 Text = "Rex / Sup Level",
-                HorizontalContentAlignment = HorizontalAlignment.Left,
+                HorizontalContentAlignment = HorizontalAlignment.Left
 
             };
 
-            var space = new Button
+            var space = new Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center
 
             };
 
-            var space2 = new Button
+            var space2 = new Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center
 
             };
 
@@ -548,7 +551,7 @@ namespace cAlgo
             var name = string.Format("Fibonacci Retracement [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
-            var fibo = Chart.DrawFibonacciRetracement(name, point1.BarIndex, point1.Price, point2.BarIndex, point2.Price, DrawingsColor);
+            var fibo = Chart.DrawFibonacciRetracement(name, point2.BarIndex, point1.Price, point2.BarIndex, point2.Price, DrawingsColor);
             fibo.IsInteractive = true;
             fibo.DisplayPrices = false;
             _setDefaultFiboLevels(fibo.FibonacciLevels);
@@ -558,8 +561,8 @@ namespace cAlgo
         private void _equiChannelButton_Click(ButtonClickEventArgs obj)
         {
 
-            var extremums = _getTwoTopHighExtremumsInSelection();//_getFirstLastHighExtremumsInSelection();
-
+            var extremums = _getTwoTopHighExtremumsInSelection();
+            //_getFirstLastHighExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Equi Channel [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
@@ -584,7 +587,8 @@ namespace cAlgo
 
         private void _resistanceTrendLineButton_Click(ButtonClickEventArgs obj)
         {
-            var extremums = _getTwoTopHighExtremumsInSelection();//_getFirstLastHighExtremumsInSelection();
+            var extremums = _getTwoTopHighExtremumsInSelection();
+            //_getFirstLastHighExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Resistance Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
@@ -597,7 +601,8 @@ namespace cAlgo
         private void _supportTrendLineButton_Click(ButtonClickEventArgs obj)
         {
 
-            var extremums = _getTwoBottomLowExtremumsInSelection();//_getFirstLastLowExtremumsInSelection();
+            var extremums = _getTwoBottomLowExtremumsInSelection();
+            //_getFirstLastLowExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Support Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
@@ -724,7 +729,8 @@ namespace cAlgo
             ChartPoint lastHigh = new ChartPoint(0, 0);
 
             // --> Partiamo dal primo, la sicurezza non è mai troppa
-            if (SelectedStartBarIndex < 1) SelectedStartBarIndex = 1;
+            if (SelectedStartBarIndex < 1)
+                SelectedStartBarIndex = 1;
 
             // -->  Devo sapere la direzione per elaborare correttamente il trend      
             _Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? _Trend.Bearish : _Trend.Bullish;
@@ -754,7 +760,8 @@ namespace cAlgo
 
                     }
 
-                    if (count > Deviation && Bars[i].High > lastHigh.Price) lastHigh = new ChartPoint(i, Bars[i].High);
+                    if (count > Deviation && Bars[i].High > lastHigh.Price)
+                        lastHigh = new ChartPoint(i, Bars[i].High);
 
                 }
 
@@ -784,13 +791,15 @@ namespace cAlgo
 
                     }
 
-                    if (count > Deviation && Bars[i].High > lastHigh.Price) lastHigh = new ChartPoint(i, Bars[i].High);
+                    if (count > Deviation && Bars[i].High > lastHigh.Price)
+                        lastHigh = new ChartPoint(i, Bars[i].High);
 
                 }
 
             }
 
-            if (firstHigh.Price == 0 || lastHigh.Price == 0) return null;
+            if (firstHigh.Price == 0 || lastHigh.Price == 0)
+                return null;
 
             return new ChartPoints(firstHigh, lastHigh);
 
@@ -804,7 +813,8 @@ namespace cAlgo
             ChartPoint lastLow = new ChartPoint(0, 0);
 
             // --> Partiamo dal primo, la sicurezza non è mai troppa
-            if (SelectedStartBarIndex < 1) SelectedStartBarIndex = 1;
+            if (SelectedStartBarIndex < 1)
+                SelectedStartBarIndex = 1;
 
             // -->  Devo sapere la direzione per elaborare correttamente il trend      
             _Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? _Trend.Bearish : _Trend.Bullish;
@@ -834,7 +844,8 @@ namespace cAlgo
 
                     }
 
-                    if (lastLow.Price == 0 || (count > Deviation && Bars[i].Low < lastLow.Price)) lastLow = new ChartPoint(i, Bars[i].Low);
+                    if (lastLow.Price == 0 || (count > Deviation && Bars[i].Low < lastLow.Price))
+                        lastLow = new ChartPoint(i, Bars[i].Low);
 
                 }
 
@@ -864,13 +875,15 @@ namespace cAlgo
 
                     }
 
-                    if (lastLow.Price == 0 || (count > Deviation && Bars[i].Low < lastLow.Price)) lastLow = new ChartPoint(i, Bars[i].Low);
+                    if (lastLow.Price == 0 || (count > Deviation && Bars[i].Low < lastLow.Price))
+                        lastLow = new ChartPoint(i, Bars[i].Low);
 
                 }
 
             }
 
-            if (firstLow.Price == 0 || lastLow.Price == 0) return null;
+            if (firstLow.Price == 0 || lastLow.Price == 0)
+                return null;
 
             return new ChartPoints(firstLow, lastLow);
 
@@ -916,7 +929,8 @@ namespace cAlgo
         private void _chart_MouseDown(ChartMouseEventArgs obj)
         {
 
-            if (DrawingDialog.IsVisible) _closeDrawingDialog();
+            if (DrawingDialog.IsVisible)
+                _closeDrawingDialog();
 
             if (obj.CtrlKey)
             {
@@ -979,7 +993,7 @@ namespace cAlgo
             rect.IsFilled = true;
             return rect;
         }
-        
+
         /// <summary>
         /// In caso di necessità viene utilizzata per stampare dati sul grafico
         /// </summary>
@@ -1108,7 +1122,7 @@ namespace Guru
             {
 
                 // --> Strutturo le informazioni per la richiesta POST
-                NameValueCollection data = new NameValueCollection
+                NameValueCollection data = new NameValueCollection 
                 {
                     {
                         "account_broker",
@@ -1153,8 +1167,7 @@ namespace Guru
                 // -->>> Nel cBot necessita l'attivazione di "AccessRights = AccessRights.FullAccess"
                 ProductInfo.LastProduct = JsonConvert.DeserializeObject<Product>(ProductInfo.Source);
 
-            }
-            catch (Exception Exp)
+            } catch (Exception Exp)
             {
 
                 // --> Qualcosa è andato storto, registro l'eccezione
