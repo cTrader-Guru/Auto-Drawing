@@ -24,6 +24,154 @@ namespace cAlgo
 
         #region Enums & Class
 
+
+        public enum MyColors
+        {
+
+            AliceBlue,
+            AntiqueWhite,
+            Aqua,
+            Aquamarine,
+            Azure,
+            Beige,
+            Bisque,
+            Black,
+            BlanchedAlmond,
+            Blue,
+            BlueViolet,
+            Brown,
+            BurlyWood,
+            CadetBlue,
+            Chartreuse,
+            Chocolate,
+            Coral,
+            CornflowerBlue,
+            Cornsilk,
+            Crimson,
+            Cyan,
+            DarkBlue,
+            DarkCyan,
+            DarkGoldenrod,
+            DarkGray,
+            DarkGreen,
+            DarkKhaki,
+            DarkMagenta,
+            DarkOliveGreen,
+            DarkOrange,
+            DarkOrchid,
+            DarkRed,
+            DarkSalmon,
+            DarkSeaGreen,
+            DarkSlateBlue,
+            DarkSlateGray,
+            DarkTurquoise,
+            DarkViolet,
+            DeepPink,
+            DeepSkyBlue,
+            DimGray,
+            DodgerBlue,
+            Firebrick,
+            FloralWhite,
+            ForestGreen,
+            Fuchsia,
+            Gainsboro,
+            GhostWhite,
+            Gold,
+            Goldenrod,
+            Gray,
+            Green,
+            GreenYellow,
+            Honeydew,
+            HotPink,
+            IndianRed,
+            Indigo,
+            Ivory,
+            Khaki,
+            Lavender,
+            LavenderBlush,
+            LawnGreen,
+            LemonChiffon,
+            LightBlue,
+            LightCoral,
+            LightCyan,
+            LightGoldenrodYellow,
+            LightGray,
+            LightGreen,
+            LightPink,
+            LightSalmon,
+            LightSeaGreen,
+            LightSkyBlue,
+            LightSlateGray,
+            LightSteelBlue,
+            LightYellow,
+            Lime,
+            LimeGreen,
+            Linen,
+            Magenta,
+            Maroon,
+            MediumAquamarine,
+            MediumBlue,
+            MediumOrchid,
+            MediumPurple,
+            MediumSeaGreen,
+            MediumSlateBlue,
+            MediumSpringGreen,
+            MediumTurquoise,
+            MediumVioletRed,
+            MidnightBlue,
+            MintCream,
+            MistyRose,
+            Moccasin,
+            NavajoWhite,
+            Navy,
+            OldLace,
+            Olive,
+            OliveDrab,
+            Orange,
+            OrangeRed,
+            Orchid,
+            PaleGoldenrod,
+            PaleGreen,
+            PaleTurquoise,
+            PaleVioletRed,
+            PapayaWhip,
+            PeachPuff,
+            Peru,
+            Pink,
+            Plum,
+            PowderBlue,
+            Purple,
+            Red,
+            RosyBrown,
+            RoyalBlue,
+            SaddleBrown,
+            Salmon,
+            SandyBrown,
+            SeaGreen,
+            SeaShell,
+            Sienna,
+            Silver,
+            SkyBlue,
+            SlateBlue,
+            SlateGray,
+            Snow,
+            SpringGreen,
+            SteelBlue,
+            Tan,
+            Teal,
+            Thistle,
+            Tomato,
+            Transparent,
+            Turquoise,
+            Violet,
+            Wheat,
+            White,
+            WhiteSmoke,
+            Yellow,
+            YellowGreen
+
+        }
+
         /// <summary>
         /// Definisce una struttura per i tipi di trend
         /// </summary>
@@ -73,20 +221,7 @@ namespace cAlgo
             public ChartPoint Point2 { get; private set; }
 
         }
-
-        static class MyColor
-        {
-
-            public const string PanelBG = "LightGray";
-
-            public const string ChartSelection = "DodgerBlue";
-
-            public const int ChartSelectionOpacity = 50;
-
-            public const string ChartObj = "DodgerBlue";
-
-        }
-
+        
         #endregion
 
         #region Identity
@@ -99,7 +234,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.2";
+        public const string VERSION = "1.0.3";
 
         #endregion
 
@@ -126,25 +261,25 @@ namespace cAlgo
         /// <summary>
         /// Il colore degli strumenti disegnati sul grafico in formato stringa
         /// </summary>
-        [Parameter("Panel BG Color", Group = "Styles", DefaultValue = MyColor.PanelBG)]
-        public string PBackgroundColorString { get; set; }
+        [Parameter("Panel BG Color", Group = "Styles", DefaultValue = MyColors.LightGray)]
+        public MyColors PBackgroundColorString { get; set; }
 
         /// <summary>
         /// Il colore degli strumenti disegnati sul grafico in formato stringa
         /// </summary>
-        [Parameter("Drawings Color", Group = "Styles", DefaultValue = MyColor.ChartObj)]
-        public string DrawingsColorString { get; set; }
+        [Parameter("Drawings Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
+        public MyColors DrawingsColorString { get; set; }
 
         /// <summary>
         /// Il colore della selezione in formato stringa
         /// </summary>
-        [Parameter("Selection Color", Group = "Styles", DefaultValue = MyColor.ChartSelection)]
-        public string SelectionleColorString { get; set; }
+        [Parameter("Selection Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
+        public MyColors SelectionleColorString { get; set; }
 
         /// <summary>
         /// La trasparenza della selezione
         /// </summary>
-        [Parameter("Opacity", Group = "Styles", DefaultValue = MyColor.ChartSelectionOpacity, MinValue = 0, MaxValue = 100, Step = 1)]
+        [Parameter("Opacity", Group = "Styles", DefaultValue = 50, MinValue = 0, MaxValue = 100, Step = 1)]
         public int Opacity { get; set; }
 
         #endregion
@@ -184,7 +319,7 @@ namespace cAlgo
         /// <summary>
         /// I livelli standard di Fibonacci
         /// </summary>
-        readonly decimal[] DefaultFiboLevels = new[]
+        readonly decimal[] DefaultFiboLevels = new[] 
         {
             0.0m,
             23.6m,
@@ -212,22 +347,12 @@ namespace cAlgo
 
             // --> Stampo nei log la versione corrente
             Print("{0} : {1}", NAME, VERSION);
+            
+            PBackgroundColor = Color.FromName(PBackgroundColorString.ToString("G"));
 
-            // --> L'utente potrebbe inserire un colore malforme
-            if (Color.FromName(PBackgroundColorString).ToArgb() == 0)
-                PBackgroundColorString = MyColor.PanelBG;
+            DrawingsColor = Color.FromName(DrawingsColorString.ToString("G"));
 
-            PBackgroundColor = Color.FromName(PBackgroundColorString);
-
-            if (Color.FromName(DrawingsColorString).ToArgb() == 0)
-                DrawingsColorString = MyColor.ChartObj;
-
-            DrawingsColor = Color.FromName(DrawingsColorString);
-
-            if (Color.FromName(SelectionleColorString).ToArgb() == 0)
-                SelectionleColorString = MyColor.ChartSelection;
-
-            SelectionleColor = Color.FromArgb(Opacity, Color.FromName(SelectionleColorString));
+            SelectionleColor = Color.FromArgb(Opacity, Color.FromName(SelectionleColorString.ToString("G")));
 
             // --> Listner per gli eventi del grafico
             Chart.MouseDown += _chart_MouseDown;
@@ -262,7 +387,7 @@ namespace cAlgo
 
             string separator = "---------------------";
 
-            var stackPanel = new StackPanel
+            var stackPanel = new StackPanel 
             {
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -272,75 +397,75 @@ namespace cAlgo
                 BackgroundColor = PBackgroundColor
             };
 
-            var equiChannelButton = new Button
+            var equiChannelButton = new Button 
             {
                 Text = "Equidistant Channel",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var linearRegressionButton = new Button
+            var linearRegressionButton = new Button 
             {
                 Text = "Linear Regression",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var fibonacciRetracementButton = new Button
+            var fibonacciRetracementButton = new Button 
             {
                 Text = "Fibonacci Retracement",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var supportTrendLineButton = new Button
+            var supportTrendLineButton = new Button 
             {
                 Text = "Support Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceTrendLineButton = new Button
+            var resistanceTrendLineButton = new Button 
             {
                 Text = "Resistance Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceSupportTrendLineButton = new Button
+            var resistanceSupportTrendLineButton = new Button 
             {
                 Text = "Rex / Sup Trend",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var supportLevelButton = new Button
+            var supportLevelButton = new Button 
             {
                 Text = "Support",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceLevelButton = new Button
+            var resistanceLevelButton = new Button 
             {
                 Text = "Resistance",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var removeAllObjButton = new Button
+            var removeAllObjButton = new Button 
             {
                 Text = "Remove all (Shift + Click)",
                 HorizontalContentAlignment = HorizontalAlignment.Left
             };
 
-            var resistanceSupportLevelButton = new Button
+            var resistanceSupportLevelButton = new Button 
             {
                 Text = "Rex / Sup Level",
                 HorizontalContentAlignment = HorizontalAlignment.Left
 
             };
 
-            var space = new Button
+            var space = new Button 
             {
                 Text = separator,
                 HorizontalContentAlignment = HorizontalAlignment.Center
 
             };
 
-            var space2 = new Button
+            var space2 = new Button 
             {
                 Text = separator,
                 HorizontalContentAlignment = HorizontalAlignment.Center
