@@ -637,7 +637,7 @@ namespace cAlgo
         {
 
             var average = _getBodyAverageInSelection(true);
-            MessageBox.Show(string.Format("Bar Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
+            MessageBox.Show(string.Format("Bar Average : {0}, for {1} bars", average[0], average[1]), "Bar Average");
 
         }
 
