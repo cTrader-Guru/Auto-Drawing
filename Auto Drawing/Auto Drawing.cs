@@ -14,11 +14,12 @@ using System;
 using cAlgo.API;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace cAlgo
 {
 
-    [Indicator(IsOverlay = true, TimeZone = TimeZones.UTC, AccessRights = AccessRights.None)]
+    [Indicator(IsOverlay = true, TimeZone = TimeZones.UTC, AccessRights = AccessRights.FullAccess)]
     public class AutoDrawing : Indicator
     {
 
@@ -221,7 +222,7 @@ namespace cAlgo
             public ChartPoint Point2 { get; private set; }
 
         }
-        
+
         #endregion
 
         #region Identity
@@ -234,7 +235,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.3";
+        public const string VERSION = "1.0.4";
 
         #endregion
 
@@ -347,7 +348,7 @@ namespace cAlgo
 
             // --> Stampo nei log la versione corrente
             Print("{0} : {1}", NAME, VERSION);
-            
+
             PBackgroundColor = Color.FromName(PBackgroundColorString.ToString("G"));
 
             DrawingsColor = Color.FromName(DrawingsColorString.ToString("G"));
@@ -390,88 +391,102 @@ namespace cAlgo
             var stackPanel = new StackPanel 
             {
                 VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Orientation = Orientation.Vertical,
+                HorizontalAlignment = API.HorizontalAlignment.Left,
+                Orientation = API.Orientation.Vertical,
                 IsVisible = false,
                 Width = 160,
                 BackgroundColor = PBackgroundColor
             };
 
-            var equiChannelButton = new Button 
+            var barAverageButton = new API.Button 
+            {
+                Text = "Bar Average",
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
+            };
+
+            var bodyAverageButton = new API.Button
+            {
+                Text = "Body Average",
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
+            };
+
+            var equiChannelButton = new API.Button
             {
                 Text = "Equidistant Channel",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var linearRegressionButton = new Button 
+            var linearRegressionButton = new API.Button 
             {
                 Text = "Linear Regression",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var fibonacciRetracementButton = new Button 
+            var fibonacciRetracementButton = new API.Button 
             {
                 Text = "Fibonacci Retracement",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var supportTrendLineButton = new Button 
+            var supportTrendLineButton = new API.Button 
             {
                 Text = "Support Trend",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var resistanceTrendLineButton = new Button 
+            var resistanceTrendLineButton = new API.Button 
             {
                 Text = "Resistance Trend",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var resistanceSupportTrendLineButton = new Button 
+            var resistanceSupportTrendLineButton = new API.Button 
             {
                 Text = "Rex / Sup Trend",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var supportLevelButton = new Button 
+            var supportLevelButton = new API.Button 
             {
                 Text = "Support",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var resistanceLevelButton = new Button 
+            var resistanceLevelButton = new API.Button 
             {
                 Text = "Resistance",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var removeAllObjButton = new Button 
+            var removeAllObjButton = new API.Button 
             {
                 Text = "Remove all (Shift + Click)",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var resistanceSupportLevelButton = new Button 
+            var resistanceSupportLevelButton = new API.Button 
             {
                 Text = "Rex / Sup Level",
-                HorizontalContentAlignment = HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
 
             };
 
-            var space = new Button 
+            var space = new API.Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = HorizontalAlignment.Center
+                HorizontalContentAlignment = API.HorizontalAlignment.Center
 
             };
 
-            var space2 = new Button 
+            var space2 = new API.Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = HorizontalAlignment.Center
+                HorizontalContentAlignment = API.HorizontalAlignment.Center
 
             };
 
+            barAverageButton.Click += _barAverageButton_Click;
+            bodyAverageButton.Click += _bodyAverageButton_Click;
             equiChannelButton.Click += _equiChannelButton_Click;
             linearRegressionButton.Click += _linearRegressionTo_Click;
             fibonacciRetracementButton.Click += _fibonacciRetracementButton_Click;
@@ -480,9 +495,11 @@ namespace cAlgo
             resistanceSupportTrendLineButton.Click += _resistanceSupportTrendLineButton_Click;
             supportLevelButton.Click += _supportLevelButton_Click;
             resistanceLevelButton.Click += _resistanceLevelButton_Click;
-            resistanceSupportLevelButton.Click += resistanceSupportLevelButton_Click;
+            resistanceSupportLevelButton.Click += _resistanceSupportLevelButton_Click;
             removeAllObjButton.Click += _removeAllObject_Click;
 
+            stackPanel.AddChild(barAverageButton);
+            stackPanel.AddChild(bodyAverageButton);
             stackPanel.AddChild(fibonacciRetracementButton);
             stackPanel.AddChild(linearRegressionButton);
             stackPanel.AddChild(equiChannelButton);
@@ -578,7 +595,7 @@ namespace cAlgo
 
         }
 
-        private void resistanceSupportLevelButton_Click(ButtonClickEventArgs obj)
+        private void _resistanceSupportLevelButton_Click(ButtonClickEventArgs obj)
         {
 
             _resistanceLevelButton_Click(obj);
@@ -614,6 +631,22 @@ namespace cAlgo
             fibo.DisplayPrices = false;
             _setDefaultFiboLevels(fibo.FibonacciLevels);
             _closeDrawingDialog();
+        }
+
+        private void _barAverageButton_Click(ButtonClickEventArgs obj)
+        {
+
+            var average = _getBodyAverageInSelection(true);
+            MessageBox.Show(string.Format("Bar Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
+            
+        }
+
+        private void _bodyAverageButton_Click(ButtonClickEventArgs obj)
+        {
+
+            var average = _getBodyAverageInSelection();
+            MessageBox.Show(string.Format("Body Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
+            
         }
 
         private void _equiChannelButton_Click(ButtonClickEventArgs obj)
@@ -863,6 +896,33 @@ namespace cAlgo
 
         }
 
+
+        private double[] _getBodyAverageInSelection(bool bar = false)
+        {
+
+            double total = 0;
+            double count = 0;
+
+            // --> Partiamo dal primo, la sicurezza non è mai troppa
+            if (SelectedStartBarIndex < 1)
+                SelectedStartBarIndex = 1;
+
+            // --> Controllo ogni candela e registro i punti che mi interessano
+            for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
+            {
+
+                count++;
+
+                // --> Potrebbe essere una candela rialzista, restituisco sempre un numero positivo
+                total +=  (bar) ? Math.Abs(Bars[i].High - Bars[i].Low) : Math.Abs(Bars[i].Open - Bars[i].Close);
+
+            }
+
+            // --> Restituisco il numero di pips
+            return new double[] { Math.Round((total / count) / Symbol.PipSize, 2), count };
+
+        }
+
         private ChartPoints _getTwoBottomLowExtremumsInSelection()
         {
 
@@ -1060,7 +1120,7 @@ namespace cAlgo
         private void _debug(string mex = "...", bool doPrint = true)
         {
 
-            Chart.DrawStaticText(NAME + "Debug", string.Format("{0} : {1}", NAME, mex), VerticalAlignment.Bottom, HorizontalAlignment.Right, Color.Red);
+            Chart.DrawStaticText(NAME + "Debug", string.Format("{0} : {1}", NAME, mex), VerticalAlignment.Bottom, API.HorizontalAlignment.Right, Color.Red);
             if (doPrint)
                 Print(mex);
 
