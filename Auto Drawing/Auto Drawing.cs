@@ -404,13 +404,13 @@ namespace cAlgo
                 HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var bodyAverageButton = new API.Button
+            var bodyAverageButton = new API.Button 
             {
                 Text = "Body Average",
                 HorizontalContentAlignment = API.HorizontalAlignment.Left
             };
 
-            var equiChannelButton = new API.Button
+            var equiChannelButton = new API.Button 
             {
                 Text = "Equidistant Channel",
                 HorizontalContentAlignment = API.HorizontalAlignment.Left
@@ -638,7 +638,7 @@ namespace cAlgo
 
             var average = _getBodyAverageInSelection(true);
             MessageBox.Show(string.Format("Bar Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
-            
+
         }
 
         private void _bodyAverageButton_Click(ButtonClickEventArgs obj)
@@ -646,7 +646,7 @@ namespace cAlgo
 
             var average = _getBodyAverageInSelection();
             MessageBox.Show(string.Format("Body Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
-            
+
         }
 
         private void _equiChannelButton_Click(ButtonClickEventArgs obj)
@@ -914,12 +914,16 @@ namespace cAlgo
                 count++;
 
                 // --> Potrebbe essere una candela rialzista, restituisco sempre un numero positivo
-                total +=  (bar) ? Math.Abs(Bars[i].High - Bars[i].Low) : Math.Abs(Bars[i].Open - Bars[i].Close);
+                total += (bar) ? Math.Abs(Bars[i].High - Bars[i].Low) : Math.Abs(Bars[i].Open - Bars[i].Close);
 
             }
 
             // --> Restituisco il numero di pips
-            return new double[] { Math.Round((total / count) / Symbol.PipSize, 2), count };
+            return new double[] 
+            {
+                Math.Round((total / count) / Symbol.PipSize, 2),
+                count
+            };
 
         }
 
