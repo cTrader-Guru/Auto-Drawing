@@ -235,7 +235,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.4";
+        public const string VERSION = "1.0.5";
 
         #endregion
 
@@ -398,6 +398,12 @@ namespace cAlgo
                 BackgroundColor = PBackgroundColor
             };
 
+            var trendLineHorizontalButton = new API.Button
+            {
+                Text = "TrendLine Horizontal",
+                HorizontalContentAlignment = API.HorizontalAlignment.Left
+            };
+
             var barAverageButton = new API.Button 
             {
                 Text = "Bar Average",
@@ -485,6 +491,7 @@ namespace cAlgo
 
             };
 
+            trendLineHorizontalButton.Click += _trendLineHorizontalButton_Click;
             barAverageButton.Click += _barAverageButton_Click;
             bodyAverageButton.Click += _bodyAverageButton_Click;
             equiChannelButton.Click += _equiChannelButton_Click;
@@ -498,6 +505,7 @@ namespace cAlgo
             resistanceSupportLevelButton.Click += _resistanceSupportLevelButton_Click;
             removeAllObjButton.Click += _removeAllObject_Click;
 
+            stackPanel.AddChild(trendLineHorizontalButton);
             stackPanel.AddChild(barAverageButton);
             stackPanel.AddChild(bodyAverageButton);
             stackPanel.AddChild(fibonacciRetracementButton);
@@ -631,6 +639,17 @@ namespace cAlgo
             fibo.DisplayPrices = false;
             _setDefaultFiboLevels(fibo.FibonacciLevels);
             _closeDrawingDialog();
+        }
+
+        private void _trendLineHorizontalButton_Click(ButtonClickEventArgs obj)
+        {
+            
+            var name = string.Format("Horizontal Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
+            var line = Chart.DrawTrendLine(name, SelectedStartBarIndex, Bars.ClosePrices[SelectedStartBarIndex], SelectedEndBarIndex, Bars.ClosePrices[SelectedStartBarIndex], DrawingsColor);
+            line.IsInteractive = true;
+            line.ExtendToInfinity = EntendToInfinity;
+            _closeDrawingDialog();
+
         }
 
         private void _barAverageButton_Click(ButtonClickEventArgs obj)
