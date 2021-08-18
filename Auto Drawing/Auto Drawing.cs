@@ -235,7 +235,7 @@ namespace cAlgo
         /// <summary>
         /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
         /// </summary>
-        public const string VERSION = "1.0.5";
+        public const string VERSION = "1.0.6";
 
         #endregion
 
@@ -398,96 +398,111 @@ namespace cAlgo
                 BackgroundColor = PBackgroundColor
             };
 
-            var trendLineHorizontalButton = new API.Button
+            var trendLineHorizontalButton = new API.Button 
             {
                 Text = "TrendLine Horizontal",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var barAverageButton = new API.Button 
             {
                 Text = "Bar Average",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var bodyAverageButton = new API.Button 
             {
                 Text = "Body Average",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var equiChannelButton = new API.Button 
             {
                 Text = "Equidistant Channel",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var linearRegressionButton = new API.Button 
             {
                 Text = "Linear Regression",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var fibonacciRetracementButton = new API.Button 
             {
                 Text = "Fibonacci Retracement",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var supportTrendLineButton = new API.Button 
             {
                 Text = "Support Trend",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var resistanceTrendLineButton = new API.Button 
             {
                 Text = "Resistance Trend",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var resistanceSupportTrendLineButton = new API.Button 
             {
                 Text = "Rex / Sup Trend",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var supportLevelButton = new API.Button 
             {
                 Text = "Support",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var resistanceLevelButton = new API.Button 
             {
                 Text = "Resistance",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var removeAllObjButton = new API.Button 
             {
                 Text = "Remove all (Shift + Click)",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
             };
 
             var resistanceSupportLevelButton = new API.Button 
             {
                 Text = "Rex / Sup Level",
-                HorizontalContentAlignment = API.HorizontalAlignment.Left
+                HorizontalContentAlignment = API.HorizontalAlignment.Left,
+                CornerRadius = 0
 
             };
 
             var space = new API.Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = API.HorizontalAlignment.Center
+                HorizontalContentAlignment = API.HorizontalAlignment.Center,
+                CornerRadius = 0
 
             };
 
             var space2 = new API.Button 
             {
                 Text = separator,
-                HorizontalContentAlignment = API.HorizontalAlignment.Center
+                HorizontalContentAlignment = API.HorizontalAlignment.Center,
+                CornerRadius = 0
 
             };
 
@@ -643,7 +658,7 @@ namespace cAlgo
 
         private void _trendLineHorizontalButton_Click(ButtonClickEventArgs obj)
         {
-            
+
             var name = string.Format("Horizontal Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var line = Chart.DrawTrendLine(name, SelectedStartBarIndex, Bars.ClosePrices[SelectedStartBarIndex], SelectedEndBarIndex, Bars.ClosePrices[SelectedStartBarIndex], DrawingsColor);
             line.IsInteractive = true;
