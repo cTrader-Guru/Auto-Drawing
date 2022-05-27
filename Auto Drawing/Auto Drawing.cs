@@ -6,7 +6,6 @@
     Facebook    : https://www.facebook.com/ctrader.guru/
     YouTube     : https://www.youtube.com/channel/UCKkgbw09Fifj65W5t5lHeCQ
     GitHub      : https://github.com/cTraderGURU/
-    TOS         : https://ctrader.guru/termini-del-servizio/
 
 */
 
@@ -173,10 +172,7 @@ namespace cAlgo
 
         }
 
-        /// <summary>
-        /// Definisce una struttura per i tipi di trend
-        /// </summary>
-        public enum _Trend
+        public enum Trend
         {
 
             Bearish,
@@ -185,9 +181,6 @@ namespace cAlgo
 
         }
 
-        /// <summary>
-        /// Il punto di riferimento sul grafico
-        /// </summary>
         class ChartPoint
         {
 
@@ -204,9 +197,6 @@ namespace cAlgo
 
         }
 
-        /// <summary>
-        /// I punti di riferimento sul grafico
-        /// </summary>
         class ChartPoints
         {
 
@@ -227,59 +217,32 @@ namespace cAlgo
 
         #region Identity
 
-        /// <summary>
-        /// Nome del prodotto, identificativo, da modificare con il nome della propria creazione
-        /// </summary>
         public const string NAME = "Auto Drawing";
 
-        /// <summary>
-        /// La versione del prodotto, progressivo, utilie per controllare gli aggiornamenti se viene reso disponibile sul sito ctrader.guru
-        /// </summary>
         public const string VERSION = "1.0.6";
 
         #endregion
 
         #region Params
 
-        /// <summary>
-        /// Identità del prodotto nel contesto di ctrader.guru
-        /// </summary>
-        [Parameter(NAME + " " + VERSION, Group = "Identity", DefaultValue = "https://ctrader.guru/product/auto-drawing/")]
+        [Parameter(NAME + " " + VERSION, Group = "Identity", DefaultValue = "https://www.google.com/search?q=ctrader+guru+auto+drawing")]
         public string ProductInfo { get; set; }
 
-        /// <summary>
-        /// Il colore degli strumenti disegnati sul grafico in formato stringa
-        /// </summary>
         [Parameter("Deviation Period", Group = "Params", DefaultValue = 5, MinValue = 2, Step = 1)]
         public int Deviation { get; set; }
 
-        /// <summary>
-        /// Il colore degli strumenti disegnati sul grafico in formato stringa
-        /// </summary>
         [Parameter("Extend To Infinity ?", Group = "Styles", DefaultValue = false)]
         public bool EntendToInfinity { get; set; }
 
-        /// <summary>
-        /// Il colore degli strumenti disegnati sul grafico in formato stringa
-        /// </summary>
         [Parameter("Panel BG Color", Group = "Styles", DefaultValue = MyColors.LightGray)]
         public MyColors PBackgroundColorString { get; set; }
 
-        /// <summary>
-        /// Il colore degli strumenti disegnati sul grafico in formato stringa
-        /// </summary>
         [Parameter("Drawings Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
         public MyColors DrawingsColorString { get; set; }
 
-        /// <summary>
-        /// Il colore della selezione in formato stringa
-        /// </summary>
         [Parameter("Selection Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
         public MyColors SelectionleColorString { get; set; }
 
-        /// <summary>
-        /// La trasparenza della selezione
-        /// </summary>
         [Parameter("Opacity", Group = "Styles", DefaultValue = 50, MinValue = 0, MaxValue = 100, Step = 1)]
         public int Opacity { get; set; }
 
@@ -287,39 +250,18 @@ namespace cAlgo
 
         #region Property
 
-        /// <summary>
-        /// Il colore di fondo della popup
-        /// </summary>
         Color PBackgroundColor;
 
-        /// <summary>
-        /// Il colore dello strumento disegnato sul grafico
-        /// </summary>
         Color DrawingsColor;
 
-        /// <summary>
-        /// Il colore del range selezionato sul grafico
-        /// </summary>
         Color SelectionleColor;
 
-        /// <summary>
-        /// Il rettangolo di selezione, feedback visivo
-        /// </summary>
         ChartRectangle SelectRectangle;
 
-        /// <summary>
-        /// La prima candela selezionata nel range
-        /// </summary>
         int SelectedStartBarIndex;
 
-        /// <summary>
-        /// L'ultima candela selezionata nel range
-        /// </summary>
         int SelectedEndBarIndex;
 
-        /// <summary>
-        /// I livelli standard di Fibonacci
-        /// </summary>
         readonly decimal[] DefaultFiboLevels = new[] 
         {
             0.0m,
@@ -331,22 +273,15 @@ namespace cAlgo
             100.0m
         };
 
-        /// <summary>
-        /// La finestra popup con i comandi
-        /// </summary>
         ControlBase DrawingDialog;
 
         #endregion
 
         #region Indicator Events
 
-        /// <summary>
-        /// Viene generato all'avvio dell'indicatore, si inizializza l'indicatore
-        /// </summary>
         protected override void Initialize()
         {
 
-            // --> Stampo nei log la versione corrente
             Print("{0} : {1}", NAME, VERSION);
 
             PBackgroundColor = Color.FromName(PBackgroundColorString.ToString("G"));
@@ -355,24 +290,18 @@ namespace cAlgo
 
             SelectionleColor = Color.FromArgb(Opacity, Color.FromName(SelectionleColorString.ToString("G")));
 
-            // --> Listner per gli eventi del grafico
-            Chart.MouseDown += _chart_MouseDown;
-            Chart.MouseUp += _chart_MouseUp;
-            Chart.MouseMove += _chart_MouseMove;
+            Chart.MouseDown += Chart_MouseDown;
+            Chart.MouseUp += Chart_MouseUp;
+            Chart.MouseMove += Chart_MouseMove;
 
-            _createDrawingDialog();
+            CreateDrawingDialog();
 
         }
 
-        /// <summary>
-        /// Generato ad ogni tick, vengono effettuati i calcoli dell'indicatore
-        /// </summary>
-        /// <param name="index">L'indice della candela in elaborazione</param>
         public override void Calculate(int index)
         {
 
-            // -->>> Qui calchiamo e assegnamo il valore del nostro indicatore nel buffer
-            // --> Result[index] = ...
+
 
         }
 
@@ -380,10 +309,7 @@ namespace cAlgo
 
         #region Private Methods
 
-        /// <summary>
-        /// Formalizza i tasti per il controllo popup
-        /// </summary>
-        private void _createDrawingDialog()
+        private void CreateDrawingDialog()
         {
 
             string separator = "---------------------";
@@ -506,19 +432,19 @@ namespace cAlgo
 
             };
 
-            trendLineHorizontalButton.Click += _trendLineHorizontalButton_Click;
-            barAverageButton.Click += _barAverageButton_Click;
-            bodyAverageButton.Click += _bodyAverageButton_Click;
-            equiChannelButton.Click += _equiChannelButton_Click;
-            linearRegressionButton.Click += _linearRegressionTo_Click;
-            fibonacciRetracementButton.Click += _fibonacciRetracementButton_Click;
-            supportTrendLineButton.Click += _supportTrendLineButton_Click;
-            resistanceTrendLineButton.Click += _resistanceTrendLineButton_Click;
-            resistanceSupportTrendLineButton.Click += _resistanceSupportTrendLineButton_Click;
-            supportLevelButton.Click += _supportLevelButton_Click;
-            resistanceLevelButton.Click += _resistanceLevelButton_Click;
-            resistanceSupportLevelButton.Click += _resistanceSupportLevelButton_Click;
-            removeAllObjButton.Click += _removeAllObject_Click;
+            trendLineHorizontalButton.Click += TrendLineHorizontalButton_Click;
+            barAverageButton.Click += BarAverageButton_Click;
+            bodyAverageButton.Click += BodyAverageButton_Click;
+            equiChannelButton.Click += EquiChannelButton_Click;
+            linearRegressionButton.Click += LinearRegressionTo_Click;
+            fibonacciRetracementButton.Click += FibonacciRetracementButton_Click;
+            supportTrendLineButton.Click += SupportTrendLineButton_Click;
+            resistanceTrendLineButton.Click += ResistanceTrendLineButton_Click;
+            resistanceSupportTrendLineButton.Click += ResistanceSupportTrendLineButton_Click;
+            supportLevelButton.Click += SupportLevelButton_Click;
+            resistanceLevelButton.Click += ResistanceLevelButton_Click;
+            resistanceSupportLevelButton.Click += ResistanceSupportLevelButton_Click;
+            removeAllObjButton.Click += RemoveAllObject_Click;
 
             stackPanel.AddChild(trendLineHorizontalButton);
             stackPanel.AddChild(barAverageButton);
@@ -541,7 +467,7 @@ namespace cAlgo
 
         }
 
-        private void _linearRegressionTo_Click(ButtonClickEventArgs obj)
+        private void LinearRegressionTo_Click(ButtonClickEventArgs obj)
         {
 
             DataSeries series = Bars.ClosePrices;
@@ -550,8 +476,6 @@ namespace cAlgo
 
             double sum_x = 0, sum_x2 = 0, sum_y = 0, sum_xy = 0;
 
-            //int start = SelectedStartBarIndex;
-            //int end = SelectedEndBarIndex;
             int start = series.Count - PeriodBars;
             int end = series.Count - 1;
 
@@ -565,9 +489,6 @@ namespace cAlgo
 
             double a = (PeriodBars * sum_xy - sum_x * sum_y) / (PeriodBars * sum_x2 - sum_x * sum_x);
             double b = (sum_y - a * sum_x) / PeriodBars;
-
-
-            // --> Calcola il massimo e la deviazione standard
 
             double maxDeviation = 0;
             double sumDevation = 0;
@@ -583,7 +504,6 @@ namespace cAlgo
 
             double stdDeviation = Math.Sqrt(sumDevation / PeriodBars);
 
-            // --> Periodo nel futuro
             end += 20;
 
             double pr1 = a * start + b;
@@ -609,85 +529,83 @@ namespace cAlgo
             xx4.IsInteractive = false;
             xx4.ExtendToInfinity = EntendToInfinity;
 
-            string namexx5 = string.Format("Linear Regression DB [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             ChartTrendLine xx5 = Chart.DrawTrendLine("Lineardev-bottom", start, pr1 - stdDeviation, end, pr2 - stdDeviation, DrawingsColor, 1, LineStyle.DotsVeryRare);
             xx5.IsInteractive = false;
             xx5.ExtendToInfinity = EntendToInfinity;
 
-            _closeDrawingDialog();
+            CloseDrawingDialog();
 
         }
 
-        private void _resistanceSupportLevelButton_Click(ButtonClickEventArgs obj)
+        private void ResistanceSupportLevelButton_Click(ButtonClickEventArgs obj)
         {
 
-            _resistanceLevelButton_Click(obj);
-            _supportLevelButton_Click(obj);
-            _closeDrawingDialog();
+            ResistanceLevelButton_Click(obj);
+            SupportLevelButton_Click(obj);
+            CloseDrawingDialog();
 
         }
 
-        private void _resistanceSupportTrendLineButton_Click(ButtonClickEventArgs obj)
+        private void ResistanceSupportTrendLineButton_Click(ButtonClickEventArgs obj)
         {
 
-            _resistanceTrendLineButton_Click(obj);
-            _supportTrendLineButton_Click(obj);
-            _closeDrawingDialog();
+            ResistanceTrendLineButton_Click(obj);
+            SupportTrendLineButton_Click(obj);
+            CloseDrawingDialog();
 
         }
 
-        private void _removeAllObject_Click(ButtonClickEventArgs obj)
+        private void RemoveAllObject_Click(ButtonClickEventArgs obj)
         {
 
             Chart.RemoveAllObjects();
 
         }
 
-        private void _fibonacciRetracementButton_Click(ButtonClickEventArgs obj)
+        private void FibonacciRetracementButton_Click(ButtonClickEventArgs obj)
         {
-            var extremums = _getHighLowInSelection();
+            var extremums = GetHighLowInSelection();
             var name = string.Format("Fibonacci Retracement [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var fibo = Chart.DrawFibonacciRetracement(name, point2.BarIndex, point1.Price, point2.BarIndex, point2.Price, DrawingsColor);
             fibo.IsInteractive = true;
             fibo.DisplayPrices = false;
-            _setDefaultFiboLevels(fibo.FibonacciLevels);
-            _closeDrawingDialog();
+            SetDefaultFiboLevels(fibo.FibonacciLevels);
+            CloseDrawingDialog();
         }
 
-        private void _trendLineHorizontalButton_Click(ButtonClickEventArgs obj)
+        private void TrendLineHorizontalButton_Click(ButtonClickEventArgs obj)
         {
 
             var name = string.Format("Horizontal Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var line = Chart.DrawTrendLine(name, SelectedStartBarIndex, Bars.ClosePrices[SelectedStartBarIndex], SelectedEndBarIndex, Bars.ClosePrices[SelectedStartBarIndex], DrawingsColor);
             line.IsInteractive = true;
             line.ExtendToInfinity = EntendToInfinity;
-            _closeDrawingDialog();
+            CloseDrawingDialog();
 
         }
 
-        private void _barAverageButton_Click(ButtonClickEventArgs obj)
+        private void BarAverageButton_Click(ButtonClickEventArgs obj)
         {
 
-            var average = _getBodyAverageInSelection(true);
+            var average = GetBodyAverageInSelection(true);
             MessageBox.Show(string.Format("Bar Average : {0}, for {1} bars", average[0], average[1]), "Bar Average");
 
         }
 
-        private void _bodyAverageButton_Click(ButtonClickEventArgs obj)
+        private void BodyAverageButton_Click(ButtonClickEventArgs obj)
         {
 
-            var average = _getBodyAverageInSelection();
+            var average = GetBodyAverageInSelection();
             MessageBox.Show(string.Format("Body Average : {0}, for {1} bars", average[0], average[1]), "Body Average");
 
         }
 
-        private void _equiChannelButton_Click(ButtonClickEventArgs obj)
+        private void EquiChannelButton_Click(ButtonClickEventArgs obj)
         {
 
-            var extremums = _getTwoTopHighExtremumsInSelection();
-            //_getFirstLastHighExtremumsInSelection();
+            var extremums = GetTwoTopHighExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Equi Channel [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
@@ -698,11 +616,11 @@ namespace cAlgo
             equi.IsInteractive = true;
             equi.ExtendToInfinity = EntendToInfinity;
 
-            _closeDrawingDialog();
+            CloseDrawingDialog();
 
         }
 
-        private void _setDefaultFiboLevels(IEnumerable<FibonacciLevel> levels)
+        private void SetDefaultFiboLevels(IEnumerable<FibonacciLevel> levels)
         {
             foreach (var level in levels)
             {
@@ -710,24 +628,22 @@ namespace cAlgo
             }
         }
 
-        private void _resistanceTrendLineButton_Click(ButtonClickEventArgs obj)
+        private void ResistanceTrendLineButton_Click(ButtonClickEventArgs obj)
         {
-            var extremums = _getTwoTopHighExtremumsInSelection();
-            //_getFirstLastHighExtremumsInSelection();
+            var extremums = GetTwoTopHighExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Resistance Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var line = Chart.DrawTrendLine(name, point1.BarIndex, point1.Price, point2.BarIndex, point2.Price, DrawingsColor);
             line.IsInteractive = true;
             line.ExtendToInfinity = EntendToInfinity;
-            _closeDrawingDialog();
+            CloseDrawingDialog();
         }
 
-        private void _supportTrendLineButton_Click(ButtonClickEventArgs obj)
+        private void SupportTrendLineButton_Click(ButtonClickEventArgs obj)
         {
 
-            var extremums = _getTwoBottomLowExtremumsInSelection();
-            //_getFirstLastLowExtremumsInSelection();
+            var extremums = GetTwoBottomLowExtremumsInSelection();
             var point1 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point1 : extremums.Point2;
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var name = string.Format("Support Trend Line [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
@@ -735,31 +651,31 @@ namespace cAlgo
             line.IsInteractive = true;
             line.ExtendToInfinity = EntendToInfinity;
 
-            _closeDrawingDialog();
+            CloseDrawingDialog();
 
         }
 
-        private void _resistanceLevelButton_Click(ButtonClickEventArgs obj)
+        private void ResistanceLevelButton_Click(ButtonClickEventArgs obj)
         {
-            var maximum = _getMaximumInSelection();
+            var maximum = GetMaximumInSelection();
             var name = string.Format("Resistance Level [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var line = Chart.DrawHorizontalLine(name, maximum.Price, DrawingsColor);
             line.IsInteractive = true;
-            _closeDrawingDialog();
+            CloseDrawingDialog();
         }
 
-        private void _supportLevelButton_Click(ButtonClickEventArgs obj)
+        private void SupportLevelButton_Click(ButtonClickEventArgs obj)
         {
 
-            var minimum = _getMinimumInSelection();
+            var minimum = GetMinimumInSelection();
             var name = string.Format("Support Level [Auto Drawing] {0}", DateTime.Now.ToString("dd.MM.yy HH:mm:ss.zzz"));
             var line = Chart.DrawHorizontalLine(name, minimum.Price, DrawingsColor);
             line.IsInteractive = true;
-            _closeDrawingDialog();
+            CloseDrawingDialog();
 
         }
 
-        private ChartPoint _getMaximumInSelection()
+        private ChartPoint GetMaximumInSelection()
         {
             var priceMax = double.MinValue;
             int barIndexMax = -1;
@@ -775,7 +691,7 @@ namespace cAlgo
             return new ChartPoint(barIndexMax, priceMax);
         }
 
-        private ChartPoint _getMinimumInSelection()
+        private ChartPoint GetMinimumInSelection()
         {
             var priceMin = double.MaxValue;
             int barIndexMin = -1;
@@ -791,7 +707,7 @@ namespace cAlgo
             return new ChartPoint(barIndexMin, priceMin);
         }
 
-        private ChartPoints _getHighLowInSelection()
+        private ChartPoints GetHighLowInSelection()
         {
             var priceMax = double.MinValue;
             var priceMin = double.MaxValue;
@@ -818,58 +734,26 @@ namespace cAlgo
             return new ChartPoints(minimum, maximum);
         }
 
-        private ChartPoints _getFirstLastHighExtremumsInSelection()
-        {
-            var highExtremums = new List<ChartPoint>();
-            for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
-            {
-                bool isExtremum = false;
-                var currHigh = Bars[i].High;
-
-                if (i == 0 || i == Bars.ClosePrices.Count - 1)
-                {
-                    isExtremum = true;
-                }
-                else
-                {
-                    var nextHigh = Bars[i + 1].High;
-                    var prevHigh = Bars[i - 1].High;
-                    isExtremum = currHigh > nextHigh && currHigh > prevHigh;
-                }
-
-                if (isExtremum)
-                    highExtremums.Add(new ChartPoint(i, currHigh));
-            }
-            if (highExtremums.Count < 2)
-                return null;
-
-            return new ChartPoints(highExtremums.First(), highExtremums.Last());
-        }
-
-        private ChartPoints _getTwoTopHighExtremumsInSelection()
+        private ChartPoints GetTwoTopHighExtremumsInSelection()
         {
 
             int count = 0;
             ChartPoint firstHigh = new ChartPoint(0, 0);
             ChartPoint lastHigh = new ChartPoint(0, 0);
 
-            // --> Partiamo dal primo, la sicurezza non è mai troppa
             if (SelectedStartBarIndex < 1)
                 SelectedStartBarIndex = 1;
 
-            // -->  Devo sapere la direzione per elaborare correttamente il trend      
-            _Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? _Trend.Bearish : _Trend.Bullish;
+            Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? Trend.Bearish : Trend.Bullish;
 
-            if (Direction == _Trend.Bullish)
+            if (Direction == Trend.Bullish)
             {
 
-                // --> Controllo ogni candela e registro i punti che mi interessano
                 for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
                 {
 
                     count++;
 
-                    // --> Inizializzo, potrebbe esserci una selezione anomala
                     if (firstHigh.Price == 0)
                     {
 
@@ -894,13 +778,11 @@ namespace cAlgo
             else
             {
 
-                // --> Controllo ogni candela e registro i punti che mi interessano
                 for (int i = SelectedEndBarIndex; i >= SelectedStartBarIndex; i--)
                 {
 
                     count++;
 
-                    // --> Inizializzo, potrebbe esserci una selezione anomala
                     if (firstHigh.Price == 0)
                     {
 
@@ -931,28 +813,24 @@ namespace cAlgo
         }
 
 
-        private double[] _getBodyAverageInSelection(bool bar = false)
+        private double[] GetBodyAverageInSelection(bool bar = false)
         {
 
             double total = 0;
             double count = 0;
 
-            // --> Partiamo dal primo, la sicurezza non è mai troppa
             if (SelectedStartBarIndex < 1)
                 SelectedStartBarIndex = 1;
 
-            // --> Controllo ogni candela e registro i punti che mi interessano
             for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
             {
 
                 count++;
 
-                // --> Potrebbe essere una candela rialzista, restituisco sempre un numero positivo
                 total += (bar) ? Math.Abs(Bars[i].High - Bars[i].Low) : Math.Abs(Bars[i].Open - Bars[i].Close);
 
             }
 
-            // --> Restituisco il numero di pips
             return new double[] 
             {
                 Math.Round((total / count) / Symbol.PipSize, 2),
@@ -961,30 +839,26 @@ namespace cAlgo
 
         }
 
-        private ChartPoints _getTwoBottomLowExtremumsInSelection()
+        private ChartPoints GetTwoBottomLowExtremumsInSelection()
         {
 
             int count = 0;
             ChartPoint firstLow = new ChartPoint(0, 0);
             ChartPoint lastLow = new ChartPoint(0, 0);
 
-            // --> Partiamo dal primo, la sicurezza non è mai troppa
             if (SelectedStartBarIndex < 1)
                 SelectedStartBarIndex = 1;
 
-            // -->  Devo sapere la direzione per elaborare correttamente il trend      
-            _Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? _Trend.Bearish : _Trend.Bullish;
+            Trend Direction = (Bars[SelectedStartBarIndex].Low > Bars[SelectedEndBarIndex].Low) ? Trend.Bearish : Trend.Bullish;
 
-            if (Direction == _Trend.Bearish)
+            if (Direction == Trend.Bearish)
             {
 
-                // --> Controllo ogni candela e registro i punti che mi interessano
                 for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
                 {
 
                     count++;
 
-                    // --> Inizializzo, potrebbe esserci una selezione anomala
                     if (firstLow.Price == 0)
                     {
 
@@ -1009,13 +883,11 @@ namespace cAlgo
             else
             {
 
-                // --> Controllo ogni candela e registro i punti che mi interessano
                 for (int i = SelectedEndBarIndex; i >= SelectedStartBarIndex; i--)
                 {
 
                     count++;
 
-                    // --> Inizializzo, potrebbe esserci una selezione anomala
                     if (firstLow.Price == 0)
                     {
 
@@ -1045,36 +917,7 @@ namespace cAlgo
 
         }
 
-        private ChartPoints _getFirstLastLowExtremumsInSelection()
-        {
-            var lowExtremums = new List<ChartPoint>();
-            for (int i = SelectedStartBarIndex; i <= SelectedEndBarIndex; i++)
-            {
-                bool isExtremum = false;
-                var currLow = Bars[i].Low;
-
-                if (i == 0 || i == Bars.ClosePrices.Count - 1)
-                {
-                    isExtremum = true;
-                }
-                else
-                {
-                    var nextLow = Bars[i + 1].Low;
-                    var prevLow = Bars[i - 1].Low;
-                    isExtremum = currLow < nextLow && currLow < prevLow;
-                }
-
-                if (isExtremum)
-                    lowExtremums.Add(new ChartPoint(i, currLow));
-            }
-            if (lowExtremums.Count < 2)
-                return null;
-
-            return new ChartPoints(lowExtremums.First(), lowExtremums.Last());
-
-        }
-
-        private void _chart_MouseMove(ChartMouseEventArgs obj)
+        private void Chart_MouseMove(ChartMouseEventArgs obj)
         {
             if (SelectRectangle == null)
                 return;
@@ -1082,46 +925,46 @@ namespace cAlgo
             SelectRectangle.Time2 = obj.TimeValue;
         }
 
-        private void _chart_MouseDown(ChartMouseEventArgs obj)
+        private void Chart_MouseDown(ChartMouseEventArgs obj)
         {
 
             if (DrawingDialog.IsVisible)
-                _closeDrawingDialog();
+                CloseDrawingDialog();
 
             if (obj.CtrlKey)
             {
 
                 Chart.IsScrollingEnabled = false;
-                SelectRectangle = _createDragRectangle(obj.TimeValue);
+                SelectRectangle = CreateDragRectangle(obj.TimeValue);
 
             }
             else if (obj.ShiftKey)
             {
 
-                _removeAllObject_Click(null);
+                RemoveAllObject_Click(null);
 
             }
 
         }
 
-        private void _chart_MouseUp(ChartMouseEventArgs obj)
+        private void Chart_MouseUp(ChartMouseEventArgs obj)
         {
             Chart.IsScrollingEnabled = true;
 
             if (SelectRectangle != null)
             {
-                _setSelectedStartEndIndex(SelectRectangle);
+                SetSelectedStartEndIndex(SelectRectangle);
                 Chart.RemoveObject(SelectRectangle.Name);
                 SelectRectangle = null;
 
                 if (SelectedStartBarIndex >= 0 && SelectedEndBarIndex >= 0)
                 {
-                    _openDrawingDialog(obj.MouseX, obj.MouseY);
+                    OpenDrawingDialog(obj.MouseX, obj.MouseY);
                 }
             }
         }
 
-        private void _setSelectedStartEndIndex(ChartRectangle rectangle)
+        private void SetSelectedStartEndIndex(ChartRectangle rectangle)
         {
             var index1 = Bars.OpenTimes.GetIndexByTime(rectangle.Time1);
             var index2 = Bars.OpenTimes.GetIndexByTime(rectangle.Time2);
@@ -1129,7 +972,7 @@ namespace cAlgo
             SelectedEndBarIndex = Math.Max(index1, index2);
         }
 
-        private void _openDrawingDialog(double mouseX, double mouseY)
+        private void OpenDrawingDialog(double mouseX, double mouseY)
         {
             DrawingDialog.IsVisible = true;
             var left = Chart.Width - mouseX > 160 ? mouseX : mouseX - 160;
@@ -1138,30 +981,16 @@ namespace cAlgo
 
         }
 
-        private void _closeDrawingDialog()
+        private void CloseDrawingDialog()
         {
             DrawingDialog.IsVisible = false;
         }
 
-        private ChartRectangle _createDragRectangle(DateTime time)
+        private ChartRectangle CreateDragRectangle(DateTime time)
         {
             var rect = Chart.DrawRectangle("DragRectangle", time, Chart.TopY, time, Chart.BottomY, SelectionleColor);
             rect.IsFilled = true;
             return rect;
-        }
-
-        /// <summary>
-        /// In caso di necessità viene utilizzata per stampare dati sul grafico
-        /// </summary>
-        /// <param name="mex">Il messaggio da visualizzare</param>
-        /// <param name="doPrint">Flag se si vuole stampare nei log</param>
-        private void _debug(string mex = "...", bool doPrint = true)
-        {
-
-            Chart.DrawStaticText(NAME + "Debug", string.Format("{0} : {1}", NAME, mex), VerticalAlignment.Bottom, API.HorizontalAlignment.Right, Color.Red);
-            if (doPrint)
-                Print(mex);
-
         }
 
         #endregion
