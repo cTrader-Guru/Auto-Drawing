@@ -219,7 +219,7 @@ namespace cAlgo
 
         public const string NAME = "Auto Drawing";
 
-        public const string VERSION = "1.0.6";
+        public const string VERSION = "1.0.7";
 
         #endregion
 
@@ -237,7 +237,7 @@ namespace cAlgo
         [Parameter("Panel BG Color", Group = "Styles", DefaultValue = MyColors.LightGray)]
         public MyColors PBackgroundColorString { get; set; }
 
-        [Parameter("Drawings Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
+        [Parameter("Drawings Color", Group = "Styles", DefaultValue = MyColors.SlateGray)]
         public MyColors DrawingsColorString { get; set; }
 
         [Parameter("Selection Color", Group = "Styles", DefaultValue = MyColors.DodgerBlue)]
@@ -262,15 +262,21 @@ namespace cAlgo
 
         int SelectedEndBarIndex;
 
-        readonly decimal[] DefaultFiboLevels = new[] 
+        readonly double[] DefaultFiboLevels = new[] 
         {
-            0.0m,
-            23.6m,
-            38.2m,
-            50.0m,
-            61.8m,
-            76.4m,
-            100.0m
+            0.0,
+            23.6,
+            38.2,
+            50.0,
+            61.8,
+            76.4,
+            100.0,
+            -23.6,
+            -38.2,
+            -50.0,
+            -61.8,
+            -76.4,
+            -100.0
         };
 
         ControlBase DrawingDialog;
@@ -570,7 +576,7 @@ namespace cAlgo
             var point2 = extremums.Point1.BarIndex < extremums.Point2.BarIndex ? extremums.Point2 : extremums.Point1;
             var fibo = Chart.DrawFibonacciRetracement(name, point2.BarIndex, point1.Price, point2.BarIndex, point2.Price, DrawingsColor);
             fibo.IsInteractive = true;
-            fibo.DisplayPrices = false;
+            fibo.DisplayPrices = true;
             SetDefaultFiboLevels(fibo.FibonacciLevels);
             CloseDrawingDialog();
         }
@@ -622,10 +628,30 @@ namespace cAlgo
 
         private void SetDefaultFiboLevels(IEnumerable<FibonacciLevel> levels)
         {
+
+            int count = 0;
+
             foreach (var level in levels)
             {
-                level.IsVisible = Array.IndexOf(DefaultFiboLevels, (decimal)level.PercentLevel) > -1;
+
+                if (DefaultFiboLevels.Length >= count + 1)
+                {
+
+                    level.PercentLevel = DefaultFiboLevels[count];
+                    level.IsVisible = true;
+
+                }
+                else
+                {
+
+                    level.IsVisible = false;
+
+                }
+
+                count++;
+
             }
+
         }
 
         private void ResistanceTrendLineButton_Click(ButtonClickEventArgs obj)
